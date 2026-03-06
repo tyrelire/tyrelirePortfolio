@@ -65,11 +65,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       document.documentElement.setAttribute("data-theme", theme);
       window.localStorage.setItem("theme", theme);
+      // Ajout/Retrait de la classe dark pour Tailwind
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     } catch (e) {}
 
     try {
       const root = document.documentElement;
-
       if (theme === "dark") {
         root.style.setProperty("--color-background", "#030305");
         root.style.setProperty("--panel-background", "#0b0b0c");

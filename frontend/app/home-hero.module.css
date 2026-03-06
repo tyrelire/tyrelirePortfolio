@@ -1,0 +1,69 @@
+.heroContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    rgba(80, 80, 120, 0.1) 0%,
+    transparent 70%
+  );
+  animation: fadeInBg 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInBg {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.heroTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  background: linear-gradient(90deg, #e81e2b 30%, #6a82fb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeInTitle 1s 0.3s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInTitle {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.heroSubtitle {
+  font-size: 1.3rem;
+  font-weight: 400;
+  text-align: center;
+  color: #bdbdbd;
+  max-width: 600px;
+  margin: 0 auto 0.5rem auto;
+  opacity: 0;
+  animation: fadeInSubtitle 1s 0.8s forwards cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInSubtitle {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

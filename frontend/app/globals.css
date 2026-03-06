@@ -1,19 +1,28 @@
 @import "tailwindcss";
 
+/* Accent colors and theme variables */
 :root {
   --accent-red: #e81e2b;
+  --accent-blue: #1d3557;
+  --accent-blue-light: #457b9d;
   --color-background: #030305;
   --panel-background: #030305;
   --color-foreground: #ffffff;
 }
 
 :root[data-theme="dark"] {
+  --accent-red: #e81e2b;
+  --accent-blue: #1d3557;
+  --accent-blue-light: #457b9d;
   --color-background: #030305;
   --panel-background: #0b0b0c;
   --color-foreground: #ffffff;
 }
 
 :root[data-theme="light"] {
+  --accent-red: #e63946;
+  --accent-blue: #457b9d;
+  --accent-blue-light: #a8dadc;
   --color-background: #ffffff;
   --panel-background: #ffffff;
   --color-foreground: #000000;
@@ -22,17 +31,15 @@
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(
-    --font-family,
-    "Outfit Variable",
-    Outfit,
-    system-ui,
-    sans-serif
-  ) !important;
+  font-family: var(--font-outfit) !important;
   font-size: var(--font-size, 16px);
   font-weight: var(--font-weight, 500);
   backdrop-filter: var(--backdrop-filter, blur(3px));
   -webkit-backdrop-filter: var(--backdrop-filter, blur(3px));
   box-shadow: var(--box-shadow, 0 4px 24px 0 rgba(0, 0, 0, 0.08));
   transition: var(--background-transition, background 0.3s);
+}
+
+.font-jetbrains-mono {
+  font-family: var(--font-jetbrains) !important;
 }

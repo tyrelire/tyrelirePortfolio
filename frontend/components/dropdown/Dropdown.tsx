@@ -26,7 +26,6 @@ const DropdownMenuBurger: React.FC<DropdownMenuBurgerProps> = ({
       const wasMobile = prevWidth.current < 768;
       const isDesktop = w >= 768;
       prevWidth.current = w;
-      // only close when crossing from mobile -> desktop to avoid flashes
       if (wasMobile && isDesktop) setOpen(false);
     }
 
@@ -59,9 +58,7 @@ const DropdownMenuBurger: React.FC<DropdownMenuBurgerProps> = ({
       </DropdownMenu.Trigger>
       <DropdownMenu.Content
         className={`min-w-[220px] z-[9999] mr-4 rounded backdrop-blur-sm transition-colors duration-200 ${
-          theme === "dark"
-            ? "bg-black/40 text-zinc-50"
-            : "bg-white/30 text-black"
+          theme === "dark" ? "bg-black/40 text-white" : "bg-white/30 text-black"
         }`}
         sideOffset={5}
         style={{

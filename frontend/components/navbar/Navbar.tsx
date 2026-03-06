@@ -53,7 +53,7 @@ export function Navbar({ categories }: NavbarProps) {
               <a
                 href={cat.route}
                 className={`text-base font-medium transition-colors duration-200 px-1
-                  ${theme === "dark" ? "text-zinc-50" : "text-black"}
+                  ${theme === "dark" ? "text-white" : "text-black"}
                   ${isActive ? "font-bold" : "hover:opacity-80"}`}
               >
                 {cat.label}
@@ -77,7 +77,7 @@ export function Navbar({ categories }: NavbarProps) {
           {theme === "light" ? (
             <MoonIcon width={22} height={22} className="text-black" />
           ) : (
-            <SunIcon width={22} height={22} className="text-zinc-50" />
+            <SunIcon width={22} height={22} className="text-white" />
           )}
         </button>
         <DropdownMenuBurger categories={categories} />
@@ -91,7 +91,7 @@ export function Navbar({ categories }: NavbarProps) {
         {theme === "light" ? (
           <MoonIcon width={22} height={22} className="text-black" />
         ) : (
-          <SunIcon width={22} height={22} className="text-zinc-50" />
+          <SunIcon width={22} height={22} className="text-white" />
         )}
       </button>
     </header>
