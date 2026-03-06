@@ -35,7 +35,6 @@ export default function MainContent({
           </h3>
           {social && (
             <div className="flex flex-row gap-1.5 md:gap-4 items-center mb-6 md:mb-8 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700 justify-center md:justify-start">
-              <ContactEmailTag />
               {social.map((item, idx) => (
                 <a
                   key={item.name}
@@ -70,6 +69,7 @@ export default function MainContent({
                   <span>{item.name}</span>
                 </a>
               ))}
+              <ContactEmailTag />
             </div>
           )}
 
