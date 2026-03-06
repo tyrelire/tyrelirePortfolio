@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { SunIcon } from "@radix-ui/react-icons";
+import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
 import { useTheme } from "../theme/ThemeProvider";
 import DropdownMenuBurger from "../dropdown/Dropdown";
 import { usePathname } from "next/navigation";
@@ -36,7 +36,11 @@ export function Navbar({ categories }: NavbarProps) {
     >
       <a href="/" className="flex items-center gap-2">
         <img
-          src={theme === "dark" ? "/jester-logo-light.png" : "/jester-logo-dark.png"}
+          src={
+            theme === "dark"
+              ? "/jester-logo-light.png"
+              : "/jester-logo-dark.png"
+          }
           alt="Logo"
           className="h-18 w-18"
         />
@@ -70,11 +74,11 @@ export function Navbar({ categories }: NavbarProps) {
             ${theme === "dark" ? "dark:hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
           onClick={toggleTheme}
         >
-          <SunIcon
-            width={22}
-            height={22}
-            className={theme === "dark" ? "text-zinc-50" : "text-black"}
-          />
+          {theme === "light" ? (
+            <MoonIcon width={22} height={22} className="text-black" />
+          ) : (
+            <SunIcon width={22} height={22} className="text-zinc-50" />
+          )}
         </button>
         <DropdownMenuBurger categories={categories} />
       </div>
@@ -84,11 +88,11 @@ export function Navbar({ categories }: NavbarProps) {
           ${theme === "dark" ? "dark:hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
         onClick={toggleTheme}
       >
-        <SunIcon
-          width={22}
-          height={22}
-          className={theme === "dark" ? "text-zinc-50" : "text-black"}
-        />
+        {theme === "light" ? (
+          <MoonIcon width={22} height={22} className="text-black" />
+        ) : (
+          <SunIcon width={22} height={22} className="text-zinc-50" />
+        )}
       </button>
     </header>
   );

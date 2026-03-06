@@ -1,21 +1,38 @@
 @import "tailwindcss";
 
 :root {
-  --accent-red: #E81E2B;
-
+  --accent-red: #e81e2b;
   --color-background: #030305;
   --panel-background: #030305;
   --color-foreground: #ffffff;
 }
 
+:root[data-theme="dark"] {
+  --color-background: #030305;
+  --panel-background: #0b0b0c;
+  --color-foreground: #ffffff;
+}
+
+:root[data-theme="light"] {
+  --color-background: #ffffff;
+  --panel-background: #ffffff;
+  --color-foreground: #000000;
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-family: "Outfit Variable", Outfit, system-ui, sans-serif !important;
-  font-size: 16px;
-  font-weight: 500;
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.08);
-  transition: background 0.3s;
+  font-family: var(
+    --font-family,
+    "Outfit Variable",
+    Outfit,
+    system-ui,
+    sans-serif
+  ) !important;
+  font-size: var(--font-size, 16px);
+  font-weight: var(--font-weight, 500);
+  backdrop-filter: var(--backdrop-filter, blur(3px));
+  -webkit-backdrop-filter: var(--backdrop-filter, blur(3px));
+  box-shadow: var(--box-shadow, 0 4px 24px 0 rgba(0, 0, 0, 0.08));
+  transition: var(--background-transition, background 0.3s);
 }

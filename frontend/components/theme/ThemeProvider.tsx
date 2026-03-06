@@ -24,28 +24,32 @@ export function useTheme() {
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = React.useState<ThemeType | undefined>(undefined);
-  const [accent, setAccent] = React.useState<string | undefined>(undefined);
+  const [accent, setAccent] = React.useState<string>("#E81E2B");
 
   React.useEffect(() => {
     let initial: ThemeType = "light";
     try {
-      const stored = sessionStorage.getItem("theme");
-      if (stored === "dark" || stored === "light") {
-        initial = stored;
-      } else if (
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        initial = "dark";
+      const htmlTheme = document.documentElement.getAttribute("data-theme");
+      if (htmlTheme === "dark" || htmlTheme === "light") {
+        initial = htmlTheme;
+      } else {
+        const stored = window.localStorage.getItem("theme");
+        if (stored === "dark" || stored === "light") {
+          initial = stored;
+        } else if (
+          typeof window !== "undefined" &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+        ) {
+          initial = "dark";
+        }
       }
     } catch (e) {}
 
     try {
-      const storedAccent = sessionStorage.getItem("accent");
+      const storedAccent = window.localStorage.getItem("accent");
       if (storedAccent) {
         setAccent(storedAccent);
       } else if (typeof window !== "undefined") {
-        // read the value from the CSS (globals.css) so we don't override user edits
         const computed = getComputedStyle(document.documentElement)
           .getPropertyValue("--accent-red")
           ?.trim();
@@ -59,8 +63,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     if (!theme) return;
     try {
-      document.body.setAttribute("data-theme", theme);
-      sessionStorage.setItem("theme", theme);
+      document.documentElement.setAttribute("data-theme", theme);
+      window.localStorage.setItem("theme", theme);
     } catch (e) {}
 
     try {
@@ -87,7 +91,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       const root = document.documentElement;
       root.style.setProperty("--accent-red", c);
-      sessionStorage.setItem("accent", c);
+      window.localStorage.setItem("accent", c);
     } catch (e) {}
   }
 
