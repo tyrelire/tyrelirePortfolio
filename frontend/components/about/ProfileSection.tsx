@@ -3,7 +3,7 @@ import { Icon } from "@iconify/react";
 
 export default function ProfileSection({ person }: { person: any }) {
   return (
-    <aside className="flex flex-col items-center gap-6 px-6 py-12 min-w-[260px] max-w-[320px] h-fit sticky top-20 self-start">
+    <aside className="flex flex-col items-center gap-6 px-6 py-12 min-w-[260px] max-w-[320px] h-fit md:sticky md:top-20 md:self-start mx-auto">
       <Avatar.Root className="border border-white/[.145] border-2 inline-flex size-[250px] select-none items-center justify-center overflow-hidden rounded-full bg-blackA1 align-middle">
         <Avatar.Image
           className="size-full rounded-[inherit] object-cover"

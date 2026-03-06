@@ -1,10 +1,9 @@
 @import "tailwindcss";
 
 /* Accent colors and theme variables */
+
 :root {
   --accent-red: #e81e2b;
-  --accent-blue: #1d3557;
-  --accent-blue-light: #457b9d;
   --color-background: #030305;
   --panel-background: #030305;
   --color-foreground: #ffffff;
@@ -12,8 +11,6 @@
 
 :root[data-theme="dark"] {
   --accent-red: #e81e2b;
-  --accent-blue: #1d3557;
-  --accent-blue-light: #457b9d;
   --color-background: #030305;
   --panel-background: #0b0b0c;
   --color-foreground: #ffffff;
@@ -21,8 +18,6 @@
 
 :root[data-theme="light"] {
   --accent-red: #e63946;
-  --accent-blue: #457b9d;
-  --accent-blue-light: #a8dadc;
   --color-background: #ffffff;
   --panel-background: #ffffff;
   --color-foreground: #000000;

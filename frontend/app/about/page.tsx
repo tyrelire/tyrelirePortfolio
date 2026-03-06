@@ -152,13 +152,13 @@ export default function Home() {
       <div className="hidden md:block">
         <ScrollMenu structure={structure} scrollTo={scrollTo} />
       </div>
-      <div className="w-full flex flex-col md:flex-row md:gap-8">
+      <div className="w-full flex flex-col md:flex-row md:gap-8 items-center md:items-start">
         {/* ProfileSection: full width on mobile, sidebar on md+ */}
-        <div className="w-full md:w-[320px] md:flex-shrink-0">
+        <div className="w-full md:w-[320px] md:flex-shrink-0 flex justify-center md:block mb-8 md:mb-0">
           <ProfileSection person={person} />
         </div>
         {/* MainContent: full width on mobile, main area on md+ */}
-        <div className="w-full">
+        <div className="w-full flex flex-col items-center md:items-start">
           <MainContent
             about={about}
             refs={refs}

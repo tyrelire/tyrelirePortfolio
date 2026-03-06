@@ -1,5 +1,6 @@
 import React from "react";
 import { Icon } from "@iconify/react";
+import ContactEmailTag from "./ContactEmailTag";
 
 export default function MainContent({
   about,
@@ -13,7 +14,7 @@ export default function MainContent({
   social?: any[];
 }) {
   return (
-    <main className="flex-1 px-2 py-10 md:px-20 md:py-16 mx-auto w-full md:ml-0 md:max-w-3xl space-y-12">
+    <main className="flex-1 px-2 md:px-20 md:py-16 mx-auto w-full md:ml-0 md:max-w-3xl space-y-10">
       {about.intro.display && (
         <section
           ref={refs.introRef}
@@ -21,33 +22,49 @@ export default function MainContent({
           id="introduction"
         >
           <h2
-            className="text-5xl md:text-6xl font-extrabold mb-1 md:mb-2"
+            className="text-5xl md:text-6xl font-extrabold mb-3 md:mb-2 mt-2 md:mt-0 text-center md:text-left"
             style={{ color: "var(--accent-red)" }}
           >
             {person?.name || ""}
           </h2>
           <h3
-            className="text-lg md:text-2xl font-medium mb-3 md:mb-4"
+            className="text-lg md:text-2xl font-medium mb-6 md:mb-4 text-center md:text-left"
             style={{ color: "var(--color-foreground)" }}
           >
             {person?.role || ""}
           </h3>
           {social && (
-            <div className="flex flex-row gap-4 items-center mb-3">
+            <div className="flex flex-row gap-1.5 md:gap-4 items-center mb-6 md:mb-8 overflow-x-auto whitespace-nowrap scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700 justify-center md:justify-start">
+              <ContactEmailTag />
               {social.map((item, idx) => (
                 <a
                   key={item.name}
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:opacity-80 flex items-center px-3 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-700  dark:bg-neutral-900/60 backdrop-blur text-sm font-medium gap-2 transition-colors"
+                  className="hover:opacity-80 flex items-center px-2.5 py-1 md:px-3 md:py-1.5 rounded-full border border-neutral-200 dark:border-neutral-700 backdrop-blur text-xs md:text-sm font-medium gap-1.5 md:gap-2 transition-colors"
                   style={{ textDecoration: "none" }}
                 >
                   {item.icon ? (
                     typeof item.icon === "string" ? (
                       <span className="mr-1">{item.icon}</span>
                     ) : (
-                      item.icon
+                      <>
+                        <span className="block md:hidden">
+                          <Icon
+                            icon={item.icon.props.icon}
+                            width={24}
+                            height={24}
+                          />
+                        </span>
+                        <span className="hidden md:block">
+                          <Icon
+                            icon={item.icon.props.icon}
+                            width={32}
+                            height={32}
+                          />
+                        </span>
+                      </>
                     )
                   ) : null}
                   <span>{item.name}</span>
@@ -55,6 +72,7 @@ export default function MainContent({
               ))}
             </div>
           )}
+
           <p className="mb-3 md:mb-4 text-base md:text-lg">
             {about.intro.description}
           </p>
