@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 const NAVBAR_CATEGORIES = [
-  { label: "Home", route: "/" },
+  { label: "About", route: "/about" },
   { label: "Forum", route: "/forum" },
   { label: "Contact", route: "/contact" },
 ];
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning={true}>
       <head>
         <script
           dangerouslySetInnerHTML={{
