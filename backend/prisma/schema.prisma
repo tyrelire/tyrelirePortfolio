@@ -1,0 +1,235 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+// ─────────────────────────────────────────
+// ADMIN (toi)
+// ─────────────────────────────────────────
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  pseudo    String   @unique @default("tyrelire")
+  role      AdminRole @default(OWNER)
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum AdminRole {
+  OWNER
+  ADMIN
+}
+
+// ─────────────────────────────────────────
+// PROJETS
+// ─────────────────────────────────────────
+
+model Project {
+  id          Int           @id @default(autoincrement())
+  title       String
+  slug        String        @unique
+  description String        @db.Text
+  longDesc    String?       @db.LongText
+  imageUrl    String?
+  demoUrl     String?
+  repoUrl     String?
+  tags        Tag[]
+  status      ProjectStatus @default(DRAFT)
+  featured    Boolean       @default(false)
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum ProjectStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Tag {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  projects Project[]
+}
+
+// ─────────────────────────────────────────
+// CV / PORTFOLIO CONTENT
+// ─────────────────────────────────────────
+
+model Experience {
+  id           Int      @id @default(autoincrement())
+  company      String
+  role         String
+  timeframe    String
+  achievements String   @db.LongText
+  order        Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Education {
+  id          Int      @id @default(autoincrement())
+  institution String
+  date        String
+  description String   @db.Text
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Skill {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  iconName    String?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────
+// VISITOR TRACKING
+// ─────────────────────────────────────────
+
+model Visitor {
+  id              Int              @id @default(autoincrement())
+  sessionId       String           @unique // clé identité (anon/admin)
+  actorRole       VisitorActorRole @default(ANON)
+  isAuthenticated Boolean          @default(false)
+  ownerPseudo     String?
+
+  // — Réseau —
+  ip          String?
+  ipv6        String?
+  country     String?
+  countryCode String?
+  city        String?
+  region      String?
+  regionCode  String?
+  timezone    String?
+  isp         String?
+  org         String?       // organisation / entreprise derrière l'IP
+  asn         String?       // Autonomous System Number
+  isProxy     Boolean?      // VPN / proxy détecté
+  isTor       Boolean?      // nœud Tor
+  isBot       Boolean?      // user-agent bot détecté
+
+  // — Navigateur & OS —
+  userAgent    String?  @db.Text
+  browser      String?
+  browserVersion String?
+  engine       String?       // Blink, Gecko, WebKit...
+  os           String?
+  osVersion    String?
+  device       String?       // desktop / mobile / tablet
+  deviceVendor String?       // Apple, Samsung, etc.
+  deviceModel  String?       // iPhone 14, Galaxy S22, etc.
+  cpu          String?       // x86, arm64...
+
+  // — Écran & affichage —
+  screenWidth   Int?
+  screenHeight  Int?
+  colorDepth    Int?
+  pixelRatio    Float?
+  viewportWidth Int?
+  viewportHeight Int?
+  touchPoints   Int?         // nb de points tactiles supportés (0 = pas tactile)
+
+  // — Langue & localisation —
+  language        String?
+  languages       String?   // JSON array ex: ["fr-FR","fr","en"]
+  timezoneOffset  Int?      // offset UTC en minutes
+
+  // — Connexion —
+  connectionType    String?  // wifi, cellular, ethernet...
+  connectionSpeed   String?  // slow-2g, 2g, 3g, 4g
+  downlink          Float?   // vitesse estimée en Mbit/s
+  rtt               Int?     // round-trip time en ms
+
+  // — Source du trafic —
+  referrer     String?  @db.Text
+  referrerDomain String?
+  utmSource    String?
+  utmMedium    String?
+  utmCampaign  String?
+  utmTerm      String?
+  utmContent   String?
+
+  // — Préférences navigateur —
+  doNotTrack       Boolean?
+  cookiesEnabled   Boolean?
+  javaEnabled      Boolean?
+  adBlockDetected  Boolean?
+  darkMode         Boolean?  // prefers-color-scheme: dark
+  reducedMotion    Boolean?  // prefers-reduced-motion
+
+  // — Timestamps —
+  firstSeenAt DateTime @default(now())
+  lastSeenAt  DateTime @updatedAt
+
+  pageViews   PageView[]
+  events      VisitorEvent[]
+}
+
+enum VisitorActorRole {
+  ANON
+  ADMIN
+}
+
+model PageView {
+  id          Int      @id @default(autoincrement())
+  visitor     Visitor  @relation(fields: [visitorId], references: [id])
+  visitorId   Int
+  path        String
+  title       String?
+  referrer    String?  @db.Text
+  duration    Int?              // temps passé en secondes
+  scrollDepth Int?              // % max scrollé sur la page
+  viewedAt    DateTime @default(now())
+}
+
+// Events custom : clics, hover, interactions
+model VisitorEvent {
+  id        Int      @id @default(autoincrement())
+  visitor   Visitor  @relation(fields: [visitorId], references: [id])
+  visitorId Int
+  type      String   // "click", "hover", "copy", "download", "external_link"...
+  target    String?  // élément ciblé (ex: "github-button", "project-card-3")
+  path      String?  // page où l'event a eu lieu
+  value     String?  // valeur optionnelle (ex: URL cliquée)
+  createdAt DateTime @default(now())
+}
+
+// ─────────────────────────────────────────
+// CONTACT
+// ─────────────────────────────────────────
+
+model ContactMessage {
+  id        Int           @id @default(autoincrement())
+  name      String
+  email     String
+  subject   String
+  message   String        @db.Text
+  status    ContactStatus @default(NEW)
+  ip        String?
+  userAgent String?       @db.Text
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+enum ContactStatus {
+  NEW
+  READ
+}

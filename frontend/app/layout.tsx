@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Navbar } from "../components/navbar/Navbar";
+import VisitorTracker from "../components/tracking/VisitorTracker";
 import ThemeProvider from "../components/theme/ThemeProvider";
 import "./globals.css";
 import "./fonts.css";
@@ -36,9 +37,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="antialiased">
+      <body className="antialiased" suppressHydrationWarning={true}>
         <ThemeProvider>
           <Navbar categories={NAVBAR_CATEGORIES} />
+          <VisitorTracker />
           {children}
         </ThemeProvider>
       </body>

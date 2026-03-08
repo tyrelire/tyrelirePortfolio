@@ -6,6 +6,8 @@ import { useTheme } from "../theme/ThemeProvider";
 import DropdownMenuBurger from "../dropdown/Dropdown";
 import { usePathname } from "next/navigation";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:5000";
+
 type NavbarCategory = {
   label: string;
   route: string;
@@ -19,6 +21,42 @@ export function Navbar({ categories }: NavbarProps) {
   const { theme, toggleTheme } = useTheme();
   const [search, setSearch] = React.useState("");
   const pathname = usePathname();
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = React.useState(false);
+
+  React.useEffect(() => {
+    let cancelled = false;
+
+    const checkAdminSession = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/auth/me`, {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store",
+        });
+
+        if (cancelled) {
+          return;
+        }
+
+        setIsAdminAuthenticated(response.ok);
+      } catch {
+        if (!cancelled) {
+          setIsAdminAuthenticated(false);
+        }
+      }
+    };
+
+    void checkAdminSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [pathname]);
+
+  const crownButtonClass = `p-2 rounded transition-colors duration-200 ${
+    theme === "dark" ? "dark:hover:bg-zinc-800" : "hover:bg-zinc-200"
+  }`;
+
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 flex h-16 items-center justify-between px-4 md:px-8 border-b border-solid transition-colors duration-200
@@ -80,20 +118,68 @@ export function Navbar({ categories }: NavbarProps) {
             <SunIcon width={22} height={22} className="text-white" />
           )}
         </button>
+        {isAdminAuthenticated && (
+          <a
+            href="/admin"
+            aria-label="Open admin"
+            title="Admin"
+            className={crownButtonClass}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.9"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={theme === "dark" ? "text-white" : "text-black"}
+            >
+              <path d="M3 19h18" />
+              <path d="M5 19 3 7l6 5 3-6 3 6 6-5-2 12H5Z" />
+            </svg>
+          </a>
+        )}
         <DropdownMenuBurger categories={categories} />
       </div>
-      <button
-        aria-label="Toggle theme"
-        className={`ml-2 p-2 rounded transition-colors duration-200 hidden md:block
-          ${theme === "dark" ? "dark:hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
-        onClick={toggleTheme}
-      >
-        {theme === "light" ? (
-          <MoonIcon width={22} height={22} className="text-black" />
-        ) : (
-          <SunIcon width={22} height={22} className="text-white" />
+      <div className="hidden md:flex items-center gap-1">
+        {isAdminAuthenticated && (
+          <a
+            href="/admin"
+            aria-label="Open admin"
+            title="Admin"
+            className={crownButtonClass}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.9"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className={theme === "dark" ? "text-white" : "text-black"}
+            >
+              <path d="M3 19h18" />
+              <path d="M5 19 3 7l6 5 3-6 3 6 6-5-2 12H5Z" />
+            </svg>
+          </a>
         )}
-      </button>
+        <button
+          aria-label="Toggle theme"
+          className={`ml-1 p-2 rounded transition-colors duration-200
+            ${theme === "dark" ? "dark:hover:bg-zinc-800" : "hover:bg-zinc-200"}`}
+          onClick={toggleTheme}
+        >
+          {theme === "light" ? (
+            <MoonIcon width={22} height={22} className="text-black" />
+          ) : (
+            <SunIcon width={22} height={22} className="text-white" />
+          )}
+        </button>
+      </div>
     </header>
   );
 }
